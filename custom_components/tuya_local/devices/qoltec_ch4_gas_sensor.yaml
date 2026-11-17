@@ -1,0 +1,48 @@
+name: Gas detector
+products:
+  - id: bfccbeb477b2443029ppwv
+    name: Qoltec CH4 gas sensor
+entities:
+  - entity: binary_sensor
+    class: gas
+    dps:
+      - id: 2
+        type: string
+        name: sensor
+        mapping:
+          - dps_val: alarm
+            value: true
+          - dps_val: normal
+            value: false
+  - entity: binary_sensor
+    name: Preheating
+    category: diagnostic
+    dps:
+      - id: 10
+        type: boolean
+        name: sensor
+  - entity: binary_sensor
+    name: End of life
+    class: problem
+    category: diagnostic
+    dps:
+      - id: 11
+        type: boolean
+        name: sensor
+        mapping:
+          - dps_val: true
+            value: false
+          - dps_val: false
+            value: true
+  - entity: binary_sensor
+    name: Fault
+    class: problem
+    category: diagnostic
+    dps:
+      - id: 45
+        type: bitfield
+        name: sensor
+        mapping:
+          - dps_val: 0
+            value: false
+          - value: true
