@@ -1,0 +1,79 @@
+name: Zamel CTW-10 CO Detector
+products:
+  - id: kvc9ssskkjz2awnl
+    manufacturer: Zamel
+    model: CTW-10
+entities:
+  - entity: binary_sensor
+    class: carbon_monoxide
+    dps:
+      - id: 1
+        type: string
+        name: sensor
+        optional: true
+        mapping:
+          - dps_val: alarm
+            value: true
+          - dps_val: normal
+            value: false
+  - entity: sensor
+    name: CO concentration
+    class: carbon_monoxide
+    dps:
+      - id: 2
+        type: integer
+        name: sensor
+        unit: ppm
+        class: measurement
+        optional: true
+  - entity: binary_sensor
+    name: Preheating
+    category: diagnostic
+    dps:
+      - id: 10
+        type: boolean
+        name: sensor
+        optional: true
+  - entity: binary_sensor
+    name: Fault
+    class: problem
+    category: diagnostic
+    dps:
+      - id: 11
+        type: bitfield
+        name: sensor
+        optional: true
+        mapping:
+          - dps_val: 0
+            value: false
+          - value: true
+  - entity: binary_sensor
+    name: Sensor lifecycle
+    category: diagnostic
+    dps:
+      - id: 12
+        type: boolean
+        name: sensor
+        optional: true
+        mapping:
+          - dps_val: true
+            value: false
+          - dps_val: false
+            value: true
+
+  - entity: sensor
+    name: Battery state
+    icon: "mdi:battery"
+    category: diagnostic
+    dps:
+      - id: 14
+        type: string
+        name: sensor
+        optional: true
+        mapping:
+          - dps_val: low
+            value: low
+          - dps_val: middle
+            value: medium
+          - dps_val: high
+            value: high
