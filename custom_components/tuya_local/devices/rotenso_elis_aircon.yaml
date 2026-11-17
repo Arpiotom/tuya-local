@@ -1,0 +1,258 @@
+name: Rotenso Elis Air Conditioner
+products:
+  - id: nn2ooaacswz6uyi0
+    name: Rotenso Elis
+
+entities:
+  - entity: climate
+    dps:
+      # switch (DP1) i mode (DP4) połączone w jedną encję hvac_mode,
+      # zgodnie z udokumentowanym wzorcem tuya-local dla urządzeń
+      # z osobnym power switch i osobnym mode enum.
+      - id: 1
+        type: boolean
+        name: hvac_mode
+        mapping:
+          - dps_val: false
+            value: "off"
+          - dps_val: true
+            constraint: mode
+            conditions:
+              - dps_val: "0"
+                value: auto
+              - dps_val: "1"
+                value: cool
+              - dps_val: "2"
+                value: dry
+              - dps_val: "3"
+                value: fan_only
+              - dps_val: "4"
+                value: heat
+      # DP pomocniczy używany tylko przez constraint powyżej — nie tworzy
+      # osobnej widocznej encji
+      - id: 4
+        type: string
+        name: mode
+        hidden: true
+        
+      # Zadana temperatura (Tuya zwraca w °C x100, np. 2600 = 26.0°C)
+      - id: 2
+        type: integer
+        name: temperature
+        range:
+          min: 1600
+          max: 3100
+        mapping:
+          - scale: 100
+            step: 50
+
+      # Aktualna temperatura odczytana (°C x100)
+      - id: 3
+        type: integer
+        name: current_temperature
+        mapping:
+          - scale: 100
+          
+      # Prędkość wentylatora
+      - id: 5
+        type: string
+        name: fan_mode
+        mapping:
+          - dps_val: "0"
+            value: Auto
+          - dps_val: "1"
+            value: Cicho
+          - dps_val: "2"
+            value: Słabo
+          - dps_val: "3"
+            value: Średnio-słabo
+          - dps_val: "4"
+            value: Średnio
+          - dps_val: "5"
+            value: Średnio-mocno
+          - dps_val: "6"
+            value: Mocno
+          - dps_val: "7"
+            value: Turbo
+
+  - entity: switch
+    name: ECO
+    icon: mdi:leaf
+    dps:
+      - id: 8
+        type: boolean
+        name: switch
+        
+  - entity: switch
+    name: Osuszanie
+    icon: mdi:air-purifier
+    dps:
+      - id: 9
+        type: boolean
+        name: switch
+
+#  - entity: switch
+#    name: Heat (tryb dodatkowy)
+#    icon: mdi:radiator
+#    dps:
+#      - id: 12
+#        type: boolean
+#        name: switch
+
+  - entity: switch
+    name: Podświetlenie
+    icon: mdi:lightbulb
+    dps:
+      - id: 13
+        type: boolean
+        name: switch
+  - entity: switch
+    name: Dźwięk potwierdzenia
+    icon: mdi:volume-high
+    dps:
+      - id: 16
+        type: boolean
+        name: switch
+        
+  - entity: switch
+    name: Health / Oczyszczanie
+    icon: mdi:air-purifier
+    dps:
+      - id: 26
+        type: boolean
+        name: switch
+
+  - entity: switch
+    name: Samoczyszczenie
+    icon: mdi:spray-bottle
+    dps:
+      - id: 27
+        type: boolean
+        name: switch       
+       
+  # Kierunek nawiewu pionowy (gear_vertical, DP 31, zakres 0-13)
+  - entity: select
+    name: Kierunek nawiewu (pion)
+    icon: mdi:arrow-up-down
+    dps:
+      - id: 31
+        type: string
+        name: option
+        mapping:
+ #         - dps_val: "0"
+ #           value: "0"
+          - dps_val: "1"
+            value: "Auto"
+          - dps_val: "2"
+            value: "Up Down"
+          - dps_val: "3"
+            value: "Down Flow"
+#         - dps_val: "4"
+#           value: "4"
+#         - dps_val: "5"
+#           value: "5"
+#         - dps_val: "6"
+#           value: "6"
+          - dps_val: "7"
+            value: "Up Fix"
+          - dps_val: "8"
+            value: "Ręczne"
+#          - dps_val: "9"
+#            value: "9"
+          - dps_val: "10"
+            value: "Above Up"
+          - dps_val: "11"
+            value: "Middle"
+          - dps_val: "12"
+            value: "Abowe Down"
+          - dps_val: "13"
+            value: "Down Fix"
+
+  # Kierunek nawiewu poziomy (gear_horizontal, DP 34, zakres 0-17)
+  - entity: select
+    name: Kierunek nawiewu (poziom)
+    icon: mdi:arrow-left-right
+    dps:
+      - id: 34
+        type: string
+        name: option
+        mapping:
+#          - dps_val: "0"
+#            value: "0"
+          - dps_val: "1"
+            value: "Auto"
+          - dps_val: "2"
+            value: "Left Flow"
+          - dps_val: "3"
+            value: "Middle Flow"
+          - dps_val: "4"
+            value: "Right Flow"
+#          - dps_val: "5"
+#            value: "5"
+#          - dps_val: "6"
+#            value: "6"
+#          - dps_val: "7"
+#            value: "7"
+          - dps_val: "8"
+            value: "Ręcznie"
+          - dps_val: "9"
+            value: "Left Fix"
+          - dps_val: "10"
+            value: "A Bit Left"
+          - dps_val: "11"
+            value: "Middle Fix"
+          - dps_val: "12"
+            value: "A Big Right"
+          - dps_val: "13"
+            value: "Right Fix"
+#          - dps_val: "14"
+#            value: "14"
+#          - dps_val: "15"
+#            value: "15"
+#          - dps_val: "16"
+#            value: "16"
+#          - dps_val: "17"
+#            value: "17"
+
+  - entity: switch
+    name: Automatyczny Swing (Pion)
+    icon: mdi:arrow-up-down-bold
+    dps:
+      - id: 137
+        type: string
+        name: switch
+        mapping:
+          - dps_val: "0"
+            value: false
+          - dps_val: "1"
+            value: true
+
+  - entity: switch
+    name: Automatyczny Swing (Poziom)
+    icon: mdi:arrow-left-right-bold
+    dps:
+      - id: 138
+        type: string
+        name: switch
+        mapping:
+          - dps_val: "0"
+            value: false
+          - dps_val: "1"
+            value: true
+
+  - entity: select
+    name: Sleep
+    icon: mdi:arrow-up-down
+    dps:
+      - id: 126
+        type: string
+        name: option
+        mapping:
+          - dps_val: "0"
+            value: "Wyłączone"
+          - dps_val: "1"
+            value: "Standard"
+          - dps_val: "2"
+            value: "Dorośli"
+          - dps_val: "3"
+            value: "Dzieci"
